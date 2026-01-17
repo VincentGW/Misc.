@@ -230,7 +230,7 @@ try:
     # Create Report workbook with unfiltered data first
     print()
     print("Creating Report workbook...")
-    report_filename = f"Report_{current_date}.xlsx"
+    report_filename = f"ALL_CAMPUS_{current_date}.xlsx"
     report_path = os.path.join(base_path, report_filename)
 
     # Create a copy of process for the report and add formulas
@@ -426,3 +426,4 @@ except Exception as e:
 finally:
     # Wait for user input before closing
     input("\nPress Enter to exit...")
+
