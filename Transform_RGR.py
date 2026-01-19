@@ -304,9 +304,18 @@ try:
     sum_range = report_process_sheet.range(f"I{sum_row}:Z{sum_row}")
     sum_range.api.Font.Bold = True
 
+    # Format column X with commas, no decimals
+    col_x_range = report_process_sheet.range(f"X2:X{sum_row}")
+    col_x_range.number_format = "#,##0"
+
     # Format column Z as currency with no decimals
     col_z_range = report_process_sheet.range(f"Z2:Z{sum_row}")
     col_z_range.number_format = "$#,##0"
+
+    # Set column widths for X, Y, Z to 105 pixels
+    report_process_sheet.range("X:X").column_width = 105 / 7
+    report_process_sheet.range("Y:Y").column_width = 105 / 7
+    report_process_sheet.range("Z:Z").column_width = 105 / 7
 
     # Save the Report workbook
     report_wb.save(report_path)
@@ -390,9 +399,18 @@ try:
         campus_sum_range = process_sheet.range(f"I{campus_sum_row}:Z{campus_sum_row}")
         campus_sum_range.api.Font.Bold = True
 
+        # Format column X with commas, no decimals
+        campus_col_x_range = process_sheet.range(f"X2:X{campus_sum_row}")
+        campus_col_x_range.number_format = "#,##0"
+
         # Format column Z as currency with no decimals
         campus_col_z_range = process_sheet.range(f"Z2:Z{campus_sum_row}")
         campus_col_z_range.number_format = "$#,##0"
+
+        # Set column widths for X, Y, Z to 105 pixels
+        process_sheet.range("X:X").column_width = 105 / 7
+        process_sheet.range("Y:Y").column_width = 105 / 7
+        process_sheet.range("Z:Z").column_width = 105 / 7
 
         # Save the workbook
         new_wb.save(output_path)
