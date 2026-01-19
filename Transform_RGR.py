@@ -16,7 +16,7 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 
 # Find the Excel file that starts with "RGR"
 import glob
-rgr_files = glob.glob(os.path.join(base_path, "RGR*.xlsx"))
+rgr_files = glob.glob(os.path.join(base_path, "RGR*.xlsx")) or glob.glob(os.path.join(base_path, "RGR*.xls"))
 
 if not rgr_files:
     print("ERROR: No Excel file starting with 'RGR' found in the directory.")
@@ -105,6 +105,9 @@ try:
     # Close List workbook
     list_wb.close()
 
+    # Convert ID in process to string format (to match gs format)
+    process['ID'] = pd.to_numeric(process['ID'], errors='coerce').fillna(0).astype(int).astype(str)
+
     def get_terms_for_id(uid):
         # Filter gs by ID column
         filtered = gs[gs['ID'] == uid]
@@ -117,9 +120,10 @@ try:
         return py1, py2, py3
 
     # Apply the function to create the three columns in process
-    process[['py1', 'py2', 'py3']] = process['ID'].apply(
-        lambda x: pd.Series(get_terms_for_id(x))
-    )
+    py_data = process['ID'].apply(get_terms_for_id).tolist()
+    process['py1'] = [x[0] for x in py_data]
+    process['py2'] = [x[1] for x in py_data]
+    process['py3'] = [x[2] for x in py_data]
 
     # Look for columns that contain "Term" in the name
     term_columns = [col for col in data.columns if 'Term' in col]
@@ -426,4 +430,3 @@ except Exception as e:
 finally:
     # Wait for user input before closing
     input("\nPress Enter to exit...")
-
